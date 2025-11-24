@@ -7,7 +7,6 @@ import {
   YAxis, 
   CartesianGrid, 
   Tooltip, 
-  Legend, 
   ResponsiveContainer,
   PieChart,
   Pie,
@@ -31,8 +30,6 @@ import {
   getTeacherFullName
 } from '../utils/mockData';
 import { cn } from '../utils/cn';
-
-const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6'];
 
 export function AnalyticsPage() {
   // Calculate room utilization
@@ -226,7 +223,7 @@ export function AnalyticsPage() {
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                    label={({ name, percent }) => `${name}: ${((percent || 0) * 100).toFixed(0)}%`}
                     outerRadius={100}
                     fill="#8884d8"
                     dataKey="value"

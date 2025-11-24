@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Card, CardHeader, CardContent } from '../components/Card';
 import { Button } from '../components/Button';
-import { Input } from '../components/Input';
 import { useTheme } from '../contexts/ThemeContext';
 import {
   Moon,

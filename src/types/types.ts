@@ -112,21 +112,3 @@ export interface TeacherWorkload {
   lessonsCount: number;
 }
 
-// Explicit re-exports
-export type { LessonType, WeekType, DayOfWeek };
-export type {
-  TimeSlot,
-  Group,
-  Teacher,
-  Room,
-  Subject,
-  Lesson,
-  Schedule,
-  Conflict,
-  User,
-  Theme,
-  Settings,
-  RoomUtilization,
-  TeacherWorkload
-};
-

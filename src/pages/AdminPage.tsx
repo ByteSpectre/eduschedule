@@ -1,13 +1,9 @@
 import { useState, useMemo } from 'react';
-import { DndContext, DragOverlay, closestCenter } from '@dnd-kit/core';
-import type { DragEndEvent } from '@dnd-kit/core';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
-import { Input } from '../components/Input';
 import { Modal } from '../components/Modal';
 import { 
   Plus,
-  Edit,
   Trash2,
   Copy,
   AlertCircle,

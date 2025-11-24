@@ -36,7 +36,6 @@ export function ViewerPage() {
   const [filterId, setFilterId] = useState<string | null>(null);
   const [filterLabel, setFilterLabel] = useState<string>('');
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
-  const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
 
   // Determine if current week is odd or even
   const weekNumber = Math.ceil(
@@ -61,7 +60,6 @@ export function ViewerPage() {
     setFilterType(result.type);
     setFilterId(result.id);
     setFilterLabel(result.label);
-    setViewMode('table');
   };
 
   const handleWeekChange = (weeks: number) => {
@@ -102,9 +100,6 @@ export function ViewerPage() {
   // Current time indicator
   const currentTime = new Date();
   const currentDay = format(currentTime, 'EEEE', { locale: ru }).toLowerCase();
-  const currentHour = currentTime.getHours();
-  const currentMinute = currentTime.getMinutes();
-  const currentTimeInMinutes = currentHour * 60 + currentMinute;
 
   const isToday = (day: string) => {
     const dayMap: Record<string, DayOfWeek> = {
