@@ -1,5 +1,4 @@
-import type { ReactNode } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, Outlet } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 import { 
   Calendar, 
@@ -15,19 +14,16 @@ import {
 import { cn } from '../utils/cn';
 import { useState } from 'react';
 
-interface LayoutProps {
-  children: ReactNode;
-}
-
 const navItems = [
-  { path: '/', label: 'Расписание', icon: Calendar },
-  { path: '/admin', label: 'Редактор', icon: LayoutDashboard },
+  { path: '/org-admin/branches', label: 'Филиалы', icon: LayoutDashboard },
+  { path: '/viewer', label: 'Просмотр', icon: Calendar },
+  { path: '/admin', label: 'Редактор', icon: Calendar },
   { path: '/data', label: 'Справочники', icon: Database },
   { path: '/analytics', label: 'Аналитика', icon: BarChart3 },
   { path: '/settings', label: 'Настройки', icon: Settings },
 ];
 
-export function Layout({ children }: LayoutProps) {
+export function Layout() {
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -140,7 +136,7 @@ export function Layout({ children }: LayoutProps) {
 
         {/* Page content */}
         <main className="flex-1 p-4 lg:p-8">
-          {children}
+          <Outlet />
         </main>
       </div>
     </div>

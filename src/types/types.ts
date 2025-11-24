@@ -19,6 +19,8 @@ export interface Group {
   course: number;
   faculty: string;
   studentCount: number;
+  organizationId: string;
+  branchId: string;
 }
 
 export interface Teacher {
@@ -78,12 +80,40 @@ export interface Conflict {
   severity: 'error' | 'warning';
 }
 
+// Organization & Branch Management
+export type OrganizationType = 'university' | 'college' | 'school';
+
+export interface Organization {
+  id: string;
+  name: string;
+  email: string;
+  type: OrganizationType;
+  city: string;
+  createdAt: Date;
+  isActive: boolean;
+  subscriptionEndDate?: Date;
+}
+
+export interface Branch {
+  id: string;
+  organizationId: string;
+  name: string;
+  city: string;
+  address: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  isActive: boolean;
+  createdAt: Date;
+}
+
 export interface User {
   id: string;
   email: string;
   firstName: string;
   lastName: string;
-  role: 'admin' | 'editor' | 'viewer';
+  role: 'super_admin' | 'org_admin' | 'editor' | 'viewer';
+  organizationId?: string; // null for super_admin
+  branchId?: string;
 }
 
 export interface Theme {

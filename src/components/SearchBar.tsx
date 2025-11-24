@@ -13,9 +13,10 @@ interface SearchResult {
 interface SearchBarProps {
   onSelect: (result: SearchResult) => void;
   placeholder?: string;
+  searchTypes?: Array<'group' | 'teacher' | 'room'>;
 }
 
-export function SearchBar({ onSelect, placeholder = 'Поиск по группам, преподавателям, аудиториям...' }: SearchBarProps) {
+export function SearchBar({ onSelect, placeholder = 'Поиск по группам, преподавателям, аудиториям...', searchTypes = ['group', 'teacher', 'room'] }: SearchBarProps) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -33,41 +34,47 @@ export function SearchBar({ onSelect, placeholder = 'Поиск по групп�
     const allResults: SearchResult[] = [];
 
     // Search groups
-    mockGroups.forEach(group => {
-      if (group.name.toLowerCase().includes(searchQuery)) {
-        allResults.push({
-          id: group.id,
-          type: 'group',
-          label: group.name,
-          subtitle: `${group.course} курс, ${group.faculty}`,
-        });
-      }
-    });
+    if (searchTypes.includes('group')) {
+      mockGroups.forEach(group => {
+        if (group.name.toLowerCase().includes(searchQuery)) {
+          allResults.push({
+            id: group.id,
+            type: 'group',
+            label: group.name,
+            subtitle: `${group.course} курс, ${group.faculty}`,
+          });
+        }
+      });
+    }
 
     // Search teachers
-    mockTeachers.forEach(teacher => {
-      const fullName = `${teacher.lastName} ${teacher.firstName} ${teacher.middleName || ''}`.toLowerCase();
-      if (fullName.includes(searchQuery)) {
-        allResults.push({
-          id: teacher.id,
-          type: 'teacher',
-          label: getTeacherFullName(teacher),
-          subtitle: teacher.department,
-        });
-      }
-    });
+    if (searchTypes.includes('teacher')) {
+      mockTeachers.forEach(teacher => {
+        const fullName = `${teacher.lastName} ${teacher.firstName} ${teacher.middleName || ''}`.toLowerCase();
+        if (fullName.includes(searchQuery)) {
+          allResults.push({
+            id: teacher.id,
+            type: 'teacher',
+            label: getTeacherFullName(teacher),
+            subtitle: teacher.department,
+          });
+        }
+      });
+    }
 
     // Search rooms
-    mockRooms.forEach(room => {
-      if (room.number.toLowerCase().includes(searchQuery) || room.building.toLowerCase().includes(searchQuery)) {
-        allResults.push({
-          id: room.id,
-          type: 'room',
-          label: `Аудитория ${room.number}`,
-          subtitle: `${room.building}, вместимость: ${room.capacity}`,
-        });
-      }
-    });
+    if (searchTypes.includes('room')) {
+      mockRooms.forEach(room => {
+        if (room.number.toLowerCase().includes(searchQuery) || room.building.toLowerCase().includes(searchQuery)) {
+          allResults.push({
+            id: room.id,
+            type: 'room',
+            label: `Аудитория ${room.number}`,
+            subtitle: `${room.building}, вместимость: ${room.capacity}`,
+          });
+        }
+      });
+    }
 
     setResults(allResults.slice(0, 8));
     setIsOpen(allResults.length > 0);
