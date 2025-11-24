@@ -1,0 +1,200 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OrganizationType {
+  UNIVERSITY
+  COLLEGE
+  SCHOOL
+}
+
+enum BranchType {
+  UNIVERSITY
+  COLLEGE
+  SCHOOL
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ORG_ADMIN
+  EDITOR
+  VIEWER
+}
+
+enum ScheduleType {
+  TEMPLATE
+  PERIOD
+}
+
+enum WeekScheduleType {
+  ONE_WEEK
+  TWO_WEEKS
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum RoomType {
+  LECTURE
+  COMPUTER
+  LABORATORY
+  REGULAR
+}
+
+model Organization {
+  id                 String        @id @default(cuid())
+  name               String
+  email              String        @unique
+  type               OrganizationType
+  city               String
+  isActive           Boolean       @default(true)
+  subscriptionEndAt  DateTime?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  branches           Branch[]
+  users              User[]
+  schedules          ScheduleVersion[]
+  studyGroups        StudyGroup[]
+  teachers           Teacher[]
+  rooms              Room[]
+  subjects           Subject[]
+}
+
+model Branch {
+  id            String     @id @default(cuid())
+  organization  Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  name          String
+  type          BranchType
+  city          String
+  address       String
+  contactEmail  String?
+  contactPhone  String?
+  isActive      Boolean    @default(true)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  users         User[]
+  schedules     ScheduleVersion[]
+  studyGroups   StudyGroup[]
+  teachers      Teacher[]
+  rooms         Room[]
+}
+
+model User {
+  id             String      @id @default(cuid())
+  email          String      @unique
+  passwordHash   String
+  role           UserRole
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?
+  branch         Branch?     @relation(fields: [branchId], references: [id])
+  branchId       String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+model ScheduleVersion {
+  id             String           @id @default(cuid())
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  branch         Branch           @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  branchId       String
+  name           String
+  type           ScheduleType     @default(TEMPLATE)
+  weekType       WeekScheduleType @default(ONE_WEEK)
+  weekStartDay   DayOfWeek?       @default(MONDAY)
+  daysOfWeek     DayOfWeek[]
+  lessonsPerDay  Int
+  startDate      DateTime?
+  endDate        DateTime?
+  isActive       Boolean          @default(true)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@index([organizationId])
+  @@index([branchId])
+}
+
+model StudyGroup {
+  id             String        @id @default(cuid())
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  branch         Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  branchId       String
+  name           String
+  course         Int
+  faculty        String
+  studentCount   Int
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([organizationId])
+  @@index([branchId])
+}
+
+model Teacher {
+  id             String        @id @default(cuid())
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  branch         Branch?       @relation(fields: [branchId], references: [id], onDelete: SetNull)
+  branchId       String?
+  firstName      String
+  lastName       String
+  middleName     String?
+  department     String
+  preferences    Json?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([organizationId])
+  @@index([branchId])
+}
+
+model Room {
+  id             String        @id @default(cuid())
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  branch         Branch?       @relation(fields: [branchId], references: [id], onDelete: SetNull)
+  branchId       String?
+  number         String
+  building       String
+  capacity       Int
+  type           RoomType
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([organizationId])
+  @@index([branchId])
+}
+
+model Subject {
+  id             String        @id @default(cuid())
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  name           String
+  hours          Int
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([organizationId])
+}

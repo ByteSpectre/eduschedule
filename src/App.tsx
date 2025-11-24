@@ -1,6 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { Layout } from './components/Layout';
+import { CitySelectionPage } from './pages/CitySelectionPage';
+import { OrganizationSelectionPage } from './pages/OrganizationSelectionPage';
+import { BranchSelectionPage } from './pages/BranchSelectionPage';
+import { StudentSchedulePage } from './pages/StudentSchedulePage';
+import { LoginPage } from './pages/LoginPage';
+import { OrganizationRegistrationPage } from './pages/OrganizationRegistrationPage';
+import { BranchManagementPage } from './pages/BranchManagementPage';
+import { ScheduleManagementPage } from './pages/ScheduleManagementPage';
 import { ViewerPage } from './pages/ViewerPage';
 import { AdminPage } from './pages/AdminPage';
 import { DataPage } from './pages/DataPage';
@@ -11,15 +19,28 @@ function App() {
   return (
     <ThemeProvider>
       <Router>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<ViewerPage />} />
+        <Routes>
+          {/* Student Routes - без Layout */}
+          <Route path="/" element={<CitySelectionPage />} />
+          <Route path="/student/organization-selection" element={<OrganizationSelectionPage />} />
+          <Route path="/student/branch-selection" element={<BranchSelectionPage />} />
+          <Route path="/student/schedule" element={<StudentSchedulePage />} />
+
+          {/* Auth */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<OrganizationRegistrationPage />} />
+
+          {/* Organization Admin Routes - с Layout */}
+          <Route element={<Layout />}>
+            <Route path="/org-admin/branches" element={<BranchManagementPage />} />
+            <Route path="/org-admin/schedules" element={<ScheduleManagementPage />} />
+            <Route path="/viewer" element={<ViewerPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/data" element={<DataPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/settings" element={<SettingsPage />} />
-          </Routes>
-        </Layout>
+          </Route>
+        </Routes>
       </Router>
     </ThemeProvider>
   );

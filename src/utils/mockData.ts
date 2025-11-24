@@ -12,11 +12,11 @@ export const mockTimeSlots: TimeSlot[] = [
 
 // Groups
 export const mockGroups: Group[] = [
-  { id: 'g1', name: 'ИВТ-401', course: 4, faculty: 'Информатика и вычислительная техника', studentCount: 25 },
-  { id: 'g2', name: 'ИВТ-402', course: 4, faculty: 'Информатика и вычислительная техника', studentCount: 23 },
-  { id: 'g3', name: 'ИВТ-301', course: 3, faculty: 'Информатика и вычислительная техника', studentCount: 28 },
-  { id: 'g4', name: 'ПИ-201', course: 2, faculty: 'Прикладная информатика', studentCount: 30 },
-  { id: 'g5', name: 'ПИ-202', course: 2, faculty: 'Прикладная информатика', studentCount: 27 },
+  { id: 'g1', name: 'ИВТ-401', course: 4, faculty: 'Информатика и вычислительная техника', studentCount: 25, organizationId: 'org-1', branchId: 'branch-1' },
+  { id: 'g2', name: 'ИВТ-402', course: 4, faculty: 'Информатика и вычислительная техника', studentCount: 23, organizationId: 'org-1', branchId: 'branch-1' },
+  { id: 'g3', name: 'ИВТ-301', course: 3, faculty: 'Информатика и вычислительная техника', studentCount: 28, organizationId: 'org-1', branchId: 'branch-1' },
+  { id: 'g4', name: 'ПИ-201', course: 2, faculty: 'Прикладная информатика', studentCount: 30, organizationId: 'org-1', branchId: 'branch-1' },
+  { id: 'g5', name: 'ПИ-202', course: 2, faculty: 'Прикладная информатика', studentCount: 27, organizationId: 'org-1', branchId: 'branch-1' },
 ];
 
 // Teachers

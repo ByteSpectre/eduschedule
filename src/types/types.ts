@@ -19,6 +19,9 @@ export interface Group {
   course: number;
   faculty: string;
   studentCount: number;
+  organizationId: string;
+  branchId: string;
+  createdAt?: Date;
 }
 
 export interface Teacher {
@@ -31,6 +34,9 @@ export interface Teacher {
     noSaturday?: boolean;
     preferredTimes?: string[];
   };
+  organizationId?: string;
+  branchId?: string | null;
+  createdAt?: Date;
 }
 
 export interface Room {
@@ -39,12 +45,17 @@ export interface Room {
   building: string;
   capacity: number;
   type: 'lecture' | 'computer' | 'laboratory' | 'regular';
+  organizationId?: string;
+  branchId?: string | null;
+  createdAt?: Date;
 }
 
 export interface Subject {
   id: string;
   name: string;
   hours: number;
+  organizationId?: string;
+  createdAt?: Date;
 }
 
 export interface Lesson {
@@ -78,12 +89,71 @@ export interface Conflict {
   severity: 'error' | 'warning';
 }
 
+// Organization & Branch Management
+export type OrganizationType = 'university' | 'college' | 'school';
+export type BranchType = 'university' | 'college' | 'school';
+
+export interface Organization {
+  id: string;
+  name: string;
+  email: string;
+  type: OrganizationType;
+  city: string;
+  createdAt: Date;
+  isActive: boolean;
+  subscriptionEndDate?: Date;
+}
+
+export interface Branch {
+  id: string;
+  organizationId: string;
+  name: string;
+  type: BranchType;
+  city: string;
+  address: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  isActive: boolean;
+  createdAt: Date;
+}
+
+// Schedule Management
+export type ScheduleType = 'template' | 'period';
+export type WeekScheduleType = 'one_week' | 'two_weeks';
+
+export interface ScheduleVersion {
+  id: string;
+  organizationId: string;
+  branchId: string;
+  name: string;
+  type: ScheduleType;
+  weekType: WeekScheduleType;
+  daysOfWeek: DayOfWeek[];
+  lessonsPerDay: number;
+  startDate?: Date;
+  endDate?: Date;
+  createdAt: Date;
+  isActive: boolean;
+}
+
+export type UserRole =
+  | 'super_admin'
+  | 'org_admin'
+  | 'editor'
+  | 'viewer'
+  | 'SUPER_ADMIN'
+  | 'ORG_ADMIN'
+  | 'EDITOR'
+  | 'VIEWER';
+
 export interface User {
   id: string;
   email: string;
   firstName: string;
   lastName: string;
-  role: 'admin' | 'editor' | 'viewer';
+  role: UserRole;
+  organizationId?: string; // null for super_admin
+  branchId?: string;
 }
 
 export interface Theme {

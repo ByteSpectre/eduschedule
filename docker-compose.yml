@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: eduschedule-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: #change-me#
+      POSTGRES_DB: eduschedule
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - eduschedule-net
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: eduschedule-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@eduschedule.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - '8081:80'
+    depends_on:
+      - postgres
+    networks:
+      - eduschedule-net
+
+volumes:
+  postgres_data:
+
+networks:
+  eduschedule-net:
+    driver: bridge
+
